@@ -1,5 +1,34 @@
 export function initMap(code) {
-    let empty = {
+
+    let mapConf = {
+      "idField": {
+        "es": "codine",
+        "fr": "insee",
+        "cat": "codine"
+      },
+      "nameField": {
+        "es": "nameunit",
+        "fr": "nom",
+        "cat": "nameunit"
+      },
+      "higherNameField": {
+        "es": "nameprov",
+        "fr": "nom", // TODO
+        "cat": "nameprov"
+      },
+      "defaultZoom": {
+        "es": 6,
+        "fr": 6,
+        "cat": 9
+      },
+      "defaultCenter": {
+        "es": [-3.4190, 40.2057],
+        "fr": [2.2167, 46.9916],
+        "cat": [1.6850, 41.6880]
+      }
+    }
+
+    let style = {
         "version": 8,
         "name": "Empty",
         "metadata": {
@@ -7,13 +36,6 @@ export function initMap(code) {
         },
         "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
         "sources": {
-            "munis_es": {
-                'type': 'vector',
-                'tiles': ['http://localhost:9090/maps/munis_es/{z}/{x}/{y}.pbf?'],
-                'minzoom': 5,
-                'maxzoom': 11,
-                'promoteId': 'codine'
-            }
         },
         "layers": [{
             "id": "background",
@@ -22,10 +44,10 @@ export function initMap(code) {
                 "background-color": "rgba(0,0,0,0)"
             }
         }, {
-            'id': 'munis_es',
+            'id': code,
             'type': 'fill',
-            'source': 'munis_es',
-            'source-layer': 'munis_esp',
+            'source': code,
+            'source-layer': code,
             'layout': {},
             'paint': {
                 'fill-color': ['case',
@@ -35,24 +57,31 @@ export function initMap(code) {
             }
         }]
     }
+
+    style["sources"][code] = {
+        'type': 'vector',
+        'tiles': ['http://localhost:9090/maps/' + code + '/{z}/{x}/{y}.pbf?'],
+        'minzoom': 5,
+        'maxzoom': 11,
+        'promoteId': mapConf["idField"][code]
+    }
+
     let map = new maplibregl.Map({
         container: 'map',
-        style: empty,
-        zoom: 6,
-        center: [-3.4190, 40.2057]
+        style: style,
+        zoom: mapConf["defaultZoom"][code],
+        center: mapConf["defaultCenter"][code]
     });
-    map.on('click', 'munis_es', function(e) {
+    map.on('click', code, function(e) {
         console.log(e.features)
         let coordinates = e.lngLat;
         let properties = e.features[0].properties;
         let state = e.features[0].state;
         let content = "";
         if (!state.tweet_status) {
-            content += properties.nameunit + ' (' + properties.nameprov + ')';
+            content += properties[mapConf["nameField"][code]] + ' (' + properties[mapConf["higherNameField"][code]] + ')';
             content += "<div>No tweet yet</div>"
         }
-        console.log(properties)
-        console.log(e.features[0].state)
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
         // over the copy being pointed to.
@@ -67,13 +96,14 @@ export function initMap(code) {
     // The sourcedata event is an example of MapDataEvent.
     // Set up an event listener on the map.
     map.on('sourcedata', function(e) {
-        //TODO: https://docs.mapbox.com/mapbox-gl-js/api/map/#map#setfeaturestate
         Object.keys(window.tweets_es).forEach(function(key, index) {
             map.setFeatureState({
-                'source': 'munis_es',
-                'sourceLayer': 'munis_esp',
+                'source': code,
+                'sourceLayer': code,
                 'id': key
-            }, {
+            },
+            // TODO
+              {
                 'tweet': !(window.tweets_es[key] === null),
                 'tweet_status': window.tweets_es[key]
             });
@@ -99,7 +129,3 @@ window.twttr = (function(d, s, id) {
 
   return t;
 }(document, "script", "twitter-wjs"))
-
-
-
-initMap("es");
