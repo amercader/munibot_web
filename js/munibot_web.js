@@ -1,32 +1,30 @@
 export function initMap(code) {
 
     let mapConf = {
-      "idField": {
-        "es": "codine",
-        "fr": "insee",
-        "cat": "codine"
-      },
-      "nameField": {
-        "es": "nameunit",
-        "fr": "nom",
-        "cat": "nameunit"
-      },
-      "higherNameField": {
-        "es": "nameprov",
-        "fr": "nom", // TODO
-        "cat": "nameprov"
-      },
-      "defaultZoom": {
-        "es": 6,
-        "fr": 6,
-        "cat": 9
-      },
-      "defaultCenter": {
-        "es": [-3.4190, 40.2057],
-        "fr": [2.2167, 46.9916],
-        "cat": [1.6850, 41.6880]
-      }
-    }
+        "es": {
+            "idField": "codine",
+            "nameField": "nameunit",
+            "higherNameField": "nameprov",
+            "defaultZoom": 6,
+            "defaultCenter": [-3.4190, 40.2057]
+        },
+        "fr": {
+            "idField": "insee",
+            "nameField": "nom",
+            "higherNameField": "nom", // TODO
+            "defaultZoom": 6,
+            "defaultCenter": [2.2167, 46.9916]
+
+        },
+        "cat": {
+            "idField": "codine",
+            "nameField": "nameunit",
+            "higherNameField": "nameprov",
+            "defaultZoom": 9,
+            "defaultCenter": [1.6850, 41.6880]
+
+        }
+    } [code]
 
     let style = {
         "version": 8,
@@ -36,6 +34,13 @@ export function initMap(code) {
         },
         "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
         "sources": {
+            [code]: {
+                'type': 'vector',
+                'tiles': ['http://localhost:9090/maps/' + code + '/{z}/{x}/{y}.pbf?'],
+                'minzoom': 5,
+                'maxzoom': 11,
+                'promoteId': mapConf["idField"]
+            }
         },
         "layers": [{
             "id": "background",
@@ -58,19 +63,11 @@ export function initMap(code) {
         }]
     }
 
-    style["sources"][code] = {
-        'type': 'vector',
-        'tiles': ['http://localhost:9090/maps/' + code + '/{z}/{x}/{y}.pbf?'],
-        'minzoom': 5,
-        'maxzoom': 11,
-        'promoteId': mapConf["idField"][code]
-    }
-
     let map = new maplibregl.Map({
         container: 'map',
         style: style,
-        zoom: mapConf["defaultZoom"][code],
-        center: mapConf["defaultCenter"][code]
+        zoom: mapConf["defaultZoom"],
+        center: mapConf["defaultCenter"]
     });
     map.on('click', code, function(e) {
         console.log(e.features)
@@ -79,7 +76,7 @@ export function initMap(code) {
         let state = e.features[0].state;
         let content = "";
         if (!state.tweet_status) {
-            content += properties[mapConf["nameField"][code]] + ' (' + properties[mapConf["higherNameField"][code]] + ')';
+            content += properties[mapConf["nameField"]] + ' (' + properties[mapConf["higherNameField"]] + ')';
             content += "<div>No tweet yet</div>"
         }
         // Ensure that if the map is zoomed out such that multiple
@@ -93,20 +90,19 @@ export function initMap(code) {
             twttr.widgets.createTweet(state.tweet_status, popup._content)
         }
     });
-    // The sourcedata event is an example of MapDataEvent.
-    // Set up an event listener on the map.
+
     map.on('sourcedata', function(e) {
         Object.keys(window.tweets_es).forEach(function(key, index) {
             map.setFeatureState({
-                'source': code,
-                'sourceLayer': code,
-                'id': key
-            },
-            // TODO
-              {
-                'tweet': !(window.tweets_es[key] === null),
-                'tweet_status': window.tweets_es[key]
-            });
+                    'source': code,
+                    'sourceLayer': code,
+                    'id': key
+                },
+                // TODO
+                {
+                    'tweet': !(window.tweets_es[key] === null),
+                    'tweet_status': window.tweets_es[key]
+                });
         });
     });
     map.addControl(new maplibregl.NavigationControl());
@@ -114,18 +110,18 @@ export function initMap(code) {
 
 
 window.twttr = (function(d, s, id) {
-  let js, fjs = d.getElementsByTagName(s)[0],
-    t = window.twttr || {};
-  if (d.getElementById(id)) return t;
-  js = d.createElement(s);
-  js.id = id;
-  js.src = "https://platform.twitter.com/widgets.js";
-  fjs.parentNode.insertBefore(js, fjs);
+    let js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+    if (d.getElementById(id)) return t;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
 
-  t._e = [];
-  t.ready = function(f) {
-    t._e.push(f);
-  };
+    t._e = [];
+    t.ready = function(f) {
+        t._e.push(f);
+    };
 
-  return t;
+    return t;
 }(document, "script", "twitter-wjs"))
