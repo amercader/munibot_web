@@ -6,13 +6,17 @@ export function initMap(code) {
             "nameField": "nameunit",
             "higherNameField": "nameprov",
             "defaultZoom": 6,
+            "minzoom": 5,
+            "maxzoom": 11,
             "defaultCenter": [-3.4190, 40.2057]
         },
         "fr": {
             "idField": "insee",
             "nameField": "nom",
-            "higherNameField": "nom", // TODO
+            "higherNameField": "dep",
             "defaultZoom": 6,
+            "minzoom": 5,
+            "maxzoom": 11,
             "defaultCenter": [2.2167, 46.9916]
 
         },
@@ -20,7 +24,9 @@ export function initMap(code) {
             "idField": "codine",
             "nameField": "nameunit",
             "higherNameField": "nameprov",
-            "defaultZoom": 9,
+            "defaultZoom": 8,
+            "minzoom": 7,
+            "maxzoom": 11,
             "defaultCenter": [1.6850, 41.6880]
 
         }
@@ -36,9 +42,15 @@ export function initMap(code) {
         "sources": {
             [code]: {
                 'type': 'vector',
-                'tiles': ['http://localhost:9090/maps/' + code + '/{z}/{x}/{y}.pbf?'],
-                'minzoom': 5,
-                'maxzoom': 11,
+                // 'tiles': ['http://localhost:9090/maps/' + code + '/{z}/{x}/{y}.pbf?'],
+                'tiles': [
+                    'https://tiles.amercader.net/maps/vector/' + code + '/{z}/{x}/{y}.pbf?',
+                    'https://1.tiles.amercader.net/maps/vector/' + code + '/{z}/{x}/{y}.pbf?',
+                    'https://2.tiles.amercader.net/maps/vector/' + code + '/{z}/{x}/{y}.pbf?',
+                ],
+
+                'minzoom': mapConf["minzoom"],
+                'maxzoom': mapConf["maxzoom"],
                 'promoteId': mapConf["idField"]
             }
         },
