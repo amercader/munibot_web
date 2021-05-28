@@ -82,7 +82,6 @@ export function initMap(code) {
         center: mapConf["defaultCenter"]
     });
     map.on('click', code, function(e) {
-        console.log(e.features)
         let coordinates = e.lngLat;
         let properties = e.features[0].properties;
         let state = e.features[0].state;
@@ -104,16 +103,15 @@ export function initMap(code) {
     });
 
     map.on('sourcedata', function(e) {
-        Object.keys(window.tweets_es).forEach(function(key, index) {
+        Object.keys(window.MunibotTweets).forEach(function(key, index) {
             map.setFeatureState({
                     'source': code,
                     'sourceLayer': code,
                     'id': key
                 },
-                // TODO
                 {
-                    'tweet': !(window.tweets_es[key] === null),
-                    'tweet_status': window.tweets_es[key]
+                    'tweet': true,
+                    'tweet_status': window.MunibotTweets[key]
                 });
         });
     });
