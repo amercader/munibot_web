@@ -5,45 +5,15 @@
     <title>Munibot España</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <link href="https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.css" rel="stylesheet" />
-    <style>
-      body { margin: 0; padding: 0; }
-      #map { position: absolute; top: 0; bottom: 0; width: 100%; }
-
-	  nav {
-		  border-bottom: 1px solid black;
-	  }
-
-	  .crumbs ol {
-		  list-style-type: none;
-		  padding-left: 0;
-	  }
-
-	  .crumb {
-		  display: inline-block;
-	  }
-
-	  .crumb a::after {
-		  display: inline-block;
-		  color: #000;
-		  content: '>';
-		  font-size: 80%;
-		  font-weight: bold;
-		  padding: 0 3px;
-	  }
-
-    </style>
+    <link href="../css/munibot_web.css" rel="stylesheet" />
   </head>
   <body>
 	<nav class="crumbs">
 		<ol>
-			<li class="crumb"><a href="/">Munibot</a></li>
-			<li class="crumb">Munibot España (<a href="https://twitter.com/munibot_es" rel="noreferrer">@munibot_es</a>)</li>
+            <li class="crumb"><a href="/">Munibot</a> ></li>
+            <li class="crumb active">Munibot España <span class="twitter-link">(<a href="https://twitter.com/munibot_es" rel="noreferrer">@munibot_es</a>)</span></li>
 		</ol>
 	</nav>
-
-
-
-
     <div id="map"></div>
     <script src="https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.js"></script>
     <script src="https://tiles.amercader.net/tweets/es.js"></script>
