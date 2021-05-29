@@ -68,9 +68,11 @@ export function initMap(code) {
             'layout': {},
             'paint': {
                 'fill-color': ['case',
-                    ['boolean', ['feature-state', 'tweet'], false], '#FF0000', '#000000'
+                    ['boolean', ['feature-state', 'tweet'], false], '#ca562c', '#edeac2'
                 ],
-                'fill-opacity': 0.25
+                'fill-outline-color': ['case',
+                    ['boolean', ['feature-state', 'tweet'], false], '#4A4A4A', '#636363'
+                ],
             }
         }]
     }
@@ -105,14 +107,13 @@ export function initMap(code) {
     map.on('sourcedata', function(e) {
         Object.keys(window.MunibotTweets).forEach(function(key, index) {
             map.setFeatureState({
-                    'source': code,
-                    'sourceLayer': code,
-                    'id': key
-                },
-                {
-                    'tweet': true,
-                    'tweet_status': window.MunibotTweets[key]
-                });
+                'source': code,
+                'sourceLayer': code,
+                'id': key
+            }, {
+                'tweet': true,
+                'tweet_status': window.MunibotTweets[key]
+            });
         });
     });
     map.addControl(new maplibregl.NavigationControl());
