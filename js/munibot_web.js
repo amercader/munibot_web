@@ -5,29 +5,25 @@ export function initMap(code) {
             "idField": "codine",
             "nameField": "nameunit",
             "higherNameField": "nameprov",
-            "defaultZoom": 6,
-            "minzoom": 5,
+            "minzoom": 3,
             "maxzoom": 11,
-            "defaultCenter": [-3.4190, 40.2057]
+            "defaultBounds": [-11.73,35.14,4.59,44.04]
         },
         "fr": {
             "idField": "insee",
             "nameField": "nom",
             "higherNameField": "dep",
-            "defaultZoom": 6,
-            "minzoom": 5,
+            "minzoom": 3,
             "maxzoom": 11,
-            "defaultCenter": [2.2167, 46.9916]
-
+            "defaultBounds": [-5.45,41.26,9.87,51.27]
         },
         "cat": {
             "idField": "codine",
             "nameField": "nameunit",
             "higherNameField": "nameprov",
-            "defaultZoom": 8,
-            "minzoom": 7,
+            "minzoom": 5,
             "maxzoom": 11,
-            "defaultCenter": [1.6850, 41.6880]
+            "defaultBounds": [0.16,40.52,3.32,42.86]
 
         }
     } [code]
@@ -80,8 +76,7 @@ export function initMap(code) {
     let map = new maplibregl.Map({
         container: 'map',
         style: style,
-        zoom: mapConf["defaultZoom"],
-        center: mapConf["defaultCenter"]
+        bounds: mapConf["defaultBounds"]
     });
     map.on('click', code, function(e) {
         let coordinates = e.lngLat;

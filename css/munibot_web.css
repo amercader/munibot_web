@@ -44,3 +44,23 @@ nav .active {
 .crumb .twitter-link {
   font-weight: normal;
 }
+
+.mapboxgl-popup-content {
+  text-align: center;
+}
+
+.mapboxgl-popup-content > div{
+  margin: auto;
+}
+
+@media (max-width: 575.98px){
+  .mapboxgl-popup-content {
+    min-width: 300px;
+  }
+}
+
+@media (min-width: 576px){
+  .mapboxgl-popup-content {
+    min-width: 570px;
+  }
+}
