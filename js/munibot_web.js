@@ -7,7 +7,7 @@ export function initMap(code) {
             "higherNameField": "nameprov",
             "minzoom": 3,
             "maxzoom": 11,
-            "defaultBounds": [-11.73,35.14,4.59,44.04]
+            "defaultBounds": [-11.73, 35.14, 4.59, 44.04]
         },
         "fr": {
             "idField": "insee",
@@ -15,7 +15,7 @@ export function initMap(code) {
             "higherNameField": "dep",
             "minzoom": 3,
             "maxzoom": 11,
-            "defaultBounds": [-5.45,41.26,9.87,51.27]
+            "defaultBounds": [-5.45, 41.26, 9.87, 51.27]
         },
         "cat": {
             "idField": "codine",
@@ -23,7 +23,7 @@ export function initMap(code) {
             "higherNameField": "nameprov",
             "minzoom": 5,
             "maxzoom": 11,
-            "defaultBounds": [0.16,40.52,3.32,42.86]
+            "defaultBounds": [0.16, 40.52, 3.32, 42.86]
 
         }
     } [code]
@@ -100,18 +100,30 @@ export function initMap(code) {
     });
 
     map.on('sourcedata', function(e) {
-        Object.keys(window.MunibotTweets).forEach(function(key, index) {
+        Object.keys(window.MunibotTweets.tweets).forEach(function(key, index) {
             map.setFeatureState({
                 'source': code,
                 'sourceLayer': code,
                 'id': key
             }, {
                 'tweet': true,
-                'tweet_status': window.MunibotTweets[key]
+                'tweet_status': window.MunibotTweets.tweets[key]
             });
         });
     });
+
     map.addControl(new maplibregl.NavigationControl());
+
+    initCounts()
+}
+
+function initCounts() {
+    let tweeted = window.MunibotTweets.tweeted
+    let total = window.MunibotTweets.total
+    let content = `| ${tweeted} tweets / ${total} total (${parseInt(tweeted/total*100)}%)`
+    document.getElementsByClassName("counts")[0].append(
+        document.createElement('li').appendChild(
+            document.createTextNode(content)))
 }
 
 
