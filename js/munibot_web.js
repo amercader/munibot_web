@@ -115,6 +115,8 @@ export function initMap(code) {
     map.addControl(new maplibregl.NavigationControl());
 
     initCounts()
+
+    initExtentMap(code, map)
 }
 
 function initCounts() {
@@ -124,6 +126,21 @@ function initCounts() {
     document.getElementsByClassName("counts")[0].append(
         document.createElement('li').appendChild(
             document.createTextNode(content)))
+}
+
+
+function initExtentMap(code, map) {
+    if (code == 'es') {
+        document.querySelectorAll('#extent-map > div').forEach(function(element) {
+            element.addEventListener(
+                'click',
+                function(e) {
+                    let extent = JSON.parse(e.target.dataset.extent)
+                    map.fitBounds(extent)
+                }
+            )
+        })
+    }
 }
 
 

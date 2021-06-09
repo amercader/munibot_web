@@ -25,7 +25,6 @@ nav {
   position: absolute;
   top: 0;
   width: 100%;
-  padding-left: 20px;
 }
 
 nav .active {
@@ -34,7 +33,7 @@ nav .active {
 
 .crumbs ol {
   list-style-type: none;
-  padding-left: 0;
+  padding-left: 20px;
 }
 
 .crumb {
@@ -62,5 +61,44 @@ nav .active {
 @media (min-width: 576px){
   .mapboxgl-popup-content {
     min-width: 570px;
+  }
+}
+
+#extent-map {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #B3B3B3;
+  border-right: 1px solid #B3B3B3;
+  padding: 10px 0 10px 10px;
+  cursor: pointer;
+  background-color: white;
+}
+
+#extent-map div {
+  display: inline-block;
+  padding-right: 10px;
+  height :100%;
+  vertical-align: middle;
+}
+
+#extent-map div:hover {
+  background-color: #f4f4f4
+}
+
+#extent-map div:first-of-type {
+  border-right: 1px solid #B3B3B3;
+}
+
+
+@media (max-width: 575.98px){
+  #extent-map div {
+    min-width: 100px;
+  }
+}
+
+@media (min-width: 576px){
+  #extent-map div {
+    min-width: 150px;
   }
 }
