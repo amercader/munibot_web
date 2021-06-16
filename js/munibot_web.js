@@ -132,15 +132,41 @@ function initCounts() {
 function initExtentMap(code, map) {
     if (code == 'es') {
         document.querySelectorAll('#extent-map > div').forEach(function(element) {
-            element.addEventListener(
-                'click',
-                function(e) {
-                    let extent = JSON.parse(e.target.dataset.extent)
-                    map.fitBounds(extent)
-                }
-            )
+            registerExtentEvent(element, map)
+        })
+    } else if (code == 'fr') {
+        document.querySelector('#extent-map > h4').addEventListener('click', function(e) {
+
+            document.querySelector('#extent-map > ul').classList.toggle('hidden')
+            let spanClasses = document.querySelector('#extent-map > h4 > span').classList
+
+            if (spanClasses.contains('collapse-up')) {
+                spanClasses.remove('collapse-up')
+                spanClasses.add('collapse-down')
+            } else {
+                spanClasses.remove('collapse-down')
+                spanClasses.add('collapse-up')
+            }
+
+        })
+
+        let elements = document.getElementsByClassName('extent-link')
+
+        Array.prototype.forEach.call(elements, function(element) {
+            registerExtentEvent(element, map)
         })
     }
+}
+
+function registerExtentEvent(element, map) {
+    element.addEventListener(
+        'click',
+        function(e) {
+            e.preventDefault()
+            let extent = JSON.parse(e.target.dataset.extent)
+            map.fitBounds(extent)
+        }
+    )
 }
 
 

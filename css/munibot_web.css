@@ -71,7 +71,6 @@ nav .active {
   border-top: 1px solid #B3B3B3;
   border-right: 1px solid #B3B3B3;
   padding: 10px 0 10px 10px;
-  cursor: pointer;
   background-color: white;
 }
 
@@ -80,6 +79,7 @@ nav .active {
   padding-right: 10px;
   height :100%;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 #extent-map div:hover {
@@ -101,4 +101,31 @@ nav .active {
   #extent-map div {
     min-width: 150px;
   }
+}
+
+#extent-map h4 {
+  margin: 20px 30px 20px 20px;
+  cursor: pointer;
+}
+
+
+#extent-map ul {
+  padding: 0 20px;
+}
+
+#extent-map li {
+  margin-top: 10px;
+  list-style-type: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.collapse-up:after {
+  content: "\25B2"
+}
+
+.collapse-down:after {
+  content: "\25BC"
 }
