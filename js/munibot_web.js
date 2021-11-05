@@ -99,6 +99,19 @@ export function initMap(code) {
         }
     });
 
+    map.on('moveend', function(e) {
+        if (e.source && e.source == 'search') {
+            window.setTimeout(function() {
+                map.fire('click', {
+                    lngLat: e.center,
+                    point: map.project(e.center),
+                    originalEvent: {}
+                })
+            }, 1500)
+        }
+    });
+
+
     map.on('sourcedata', function(e) {
         Object.keys(window.MunibotTweets.tweets).forEach(function(key, index) {
             map.setFeatureState({
@@ -117,12 +130,16 @@ export function initMap(code) {
     initCounts()
 
     initExtentMap(code, map)
+
+    if (code == 'cat') {
+        initSearch(map)
+    }
 }
 
 function initCounts() {
     let tweeted = window.MunibotTweets.tweeted
     let total = window.MunibotTweets.total
-    let content = `| ${tweeted} tweets / ${total} total (${parseInt(tweeted/total*100)}%)`
+    let content = `| ${tweeted} tweets / ${total} total (${parseInt(tweeted/total*100)}%) |`
     document.getElementsByClassName("counts")[0].append(
         document.createElement('li').appendChild(
             document.createTextNode(content)))
@@ -167,6 +184,47 @@ function registerExtentEvent(element, map) {
             map.fitBounds(extent)
         }
     )
+}
+
+function initSearch(map) {
+    let config = {
+        selector: "#search",
+        placeHolder: "Search ...",
+        data: {
+            src: window.ExtentsCat,
+            keys: ["name"]
+        },
+        resultItem: {
+            highlight: {
+                render: true
+            }
+        }
+    }
+    let search = new autoComplete(config)
+
+    search.input.addEventListener("selection", function(event) {
+        let feedback = event.detail;
+        search.input.blur();
+        let name = feedback.selection.value.name;
+        let extent = feedback.selection.value.extent;
+
+        let center = [
+
+            extent[0] + (extent[2] - extent[0]) / 2,
+            extent[1] + (extent[3] - extent[1]) / 2
+        ]
+
+        map.fitBounds(extent, {
+            padding: 20
+        }, {
+            source: 'search',
+            center: center
+        })
+
+        search.input.value = name;
+
+    });
+
 }
 
 

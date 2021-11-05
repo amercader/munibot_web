@@ -5,6 +5,7 @@
     <title>Munibot Catalunya</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <link href="https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.6/dist/css/autoComplete.02.min.css">
     <link href="../css/munibot_web.css" rel="stylesheet" />
   </head>
   <body>
@@ -13,11 +14,15 @@
             <li class="crumb"><a href="/">Munibot</a> ></li>
 			<li class="crumb active">Munibot Catalunya <span class="twitter-link">(<a href="https://twitter.com/munibot_cat" rel="noreferrer">@munibot_cat</a>)</span></li>
             <li class="crumb counts"></li>
+            <li class="crumb"><input id="search" autocomplete="off"></li>
+            <li class="selection crumb"></li>
 		</ol>
 	</nav>
     <div id="map"></div>
     <script src="https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.6/dist/autoComplete.min.js"></script>
     <script src="https://tiles.amercader.net/tweets/cat.js"></script>
+    <script src="/js/cat_extents.js"></script>
     <script type="module">
       import { initMap } from "../js/munibot_web.js";
       initMap("cat");

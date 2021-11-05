@@ -15,9 +15,22 @@ main div {
 
 #map {
   position: absolute;
-  top:52px;
+  top: 60px;
   bottom: 0;
   width: 100%;
+}
+
+@media (max-width: 575.98px){
+  #map {
+    top: 128px;
+  }
+
+}
+
+@media (min-width: 576px){
+  #map {
+    top: 60px;
+  }
 }
 
 nav {
@@ -38,6 +51,7 @@ nav .active {
 
 .crumb {
   display: inline-block;
+  padding-top: 4px;
 }
 
 .crumb .twitter-link {
@@ -128,4 +142,19 @@ nav .active {
 
 .collapse-down:after {
   content: "\25BC"
+}
+
+.autoComplete_wrapper > input {
+  width: inherit;
+  height: 20px;
+  font: inherit;
+  color: inherit;
+}
+
+.autoComplete_wrapper > ul > li mark {
+  color: #ca562c;
+}
+
+.autoComplete_wrapper > ul {
+  margin-top: 0;
 }
