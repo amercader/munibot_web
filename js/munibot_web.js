@@ -25,7 +25,16 @@ export function initMap(code) {
             "maxzoom": 11,
             "defaultBounds": [0.16, 40.52, 3.32, 42.86]
 
+        },
+        "us": {
+            "idField": "GEOID",
+            "nameField": "NAMELSAD",
+            "higherNameField": "STATE_NAME",
+            "minzoom": 2,
+            "maxzoom": 8,
+            "defaultBounds": [-125, 25, -65, 50]
         }
+
     } [code]
 
     let style = {
@@ -38,13 +47,13 @@ export function initMap(code) {
         "sources": {
             [code]: {
                 'type': 'vector',
-                // 'tiles': ['http://localhost:9090/maps/' + code + '/{z}/{x}/{y}.pbf?'],
+                //'tiles': ['http://localhost:7777/tiles/' + code + '/{z}/{x}/{y}.pbf?'],
+
                 'tiles': [
                     'https://tiles.amercader.net/maps/vector/' + code + '/{z}/{x}/{y}.pbf?',
                     'https://1.tiles.amercader.net/maps/vector/' + code + '/{z}/{x}/{y}.pbf?',
                     'https://2.tiles.amercader.net/maps/vector/' + code + '/{z}/{x}/{y}.pbf?',
                 ],
-
                 'minzoom': mapConf["minzoom"],
                 'maxzoom': mapConf["maxzoom"],
                 'promoteId': mapConf["idField"]
@@ -111,7 +120,6 @@ export function initMap(code) {
         }
     });
 
-
     map.on('sourcedata', function(e) {
         Object.keys(window.MunibotTweets.tweets).forEach(function(key, index) {
             map.setFeatureState({
@@ -151,7 +159,7 @@ function initExtentMap(code, map) {
         document.querySelectorAll('#extent-map > div').forEach(function(element) {
             registerExtentEvent(element, map)
         })
-    } else if (code == 'fr') {
+    } else if (code == 'fr' || code == 'us') {
         document.querySelector('#extent-map > h4').addEventListener('click', function(e) {
 
             document.querySelector('#extent-map > ul').classList.toggle('hidden')

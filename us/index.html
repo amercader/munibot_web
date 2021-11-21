@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Countybot US</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link href="https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.css" rel="stylesheet" />
+    <link href="../css/munibot_web.css" rel="stylesheet" />
+  </head>
+  <body>
+	<nav class="crumbs">
+		<ol>
+            <li class="crumb"><a href="/">Munibot</a> ></li>
+			<li class="crumb active">Countybot US <span class="twitter-link">(<a href="https://twitter.com/countybot_us" rel="noreferrer">@countybot_us</a>)</span></li>
+            <li class="crumb counts"></li>
+            <li class="selection crumb"></li>
+		</ol>
+	</nav>
+    <div id="map"></div>
+    <div id="extent-map">
+      <h4>Jump to... <span class="collapse-up"></span></h4>
+      <ul class="hidden">
+        <li><a class="extent-link" href="" data-extent="[-125,25,-65,50]">Contiguous Unitated States</a></li>
+        <li><a class="extent-link" href="" data-extent="[-179,51,-128,72]">Alaska</a></li>
+        <li><a class="extent-link" href="" data-extent="[-161,17,-153,24]">Hawaii</a></li>
+        <li><a class="extent-link" href="" data-extent="[-68,16,-65,19]">Puerto Rico</a></li>
+      </ul>
+    </div>
+
+    <script src="https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.js"></script>
+    <script src="https://tiles.amercader.net/tweets/us.js"></script>
+    <script type="module">
+      import { initMap } from "../js/munibot_web.js";
+      initMap("us");
+    </script>
+  </body>
+</html>
