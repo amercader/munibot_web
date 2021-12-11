@@ -145,7 +145,7 @@ nav .active {
 }
 
 .autoComplete_wrapper > input {
-  width: inherit;
+  width: 300px;
   height: 20px;
   font: inherit;
   color: inherit;

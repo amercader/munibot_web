@@ -139,9 +139,7 @@ export function initMap(code) {
 
     initExtentMap(code, map)
 
-    if (code == 'cat') {
-        initSearch(map)
-    }
+    initSearch(code, map)
 }
 
 function initCounts() {
@@ -194,12 +192,29 @@ function registerExtentEvent(element, map) {
     )
 }
 
-function initSearch(map) {
+function initSearch(code, map) {
+
+    let src;
+    if (code == 'cat') {
+        src = window.ExtentsCat
+    } else {
+        src = async (query) => {
+            try {
+                //const source = await fetch(`http://localhost:8000/search/${code}?q=${query}`);
+                const source = await fetch(`https://api.munibot.amercader.net/search/${code}?q=${query}`);
+                const data = await source.json();
+                return data["results"];
+            } catch (error) {
+                return error;
+            }
+        }
+    }
+
     let config = {
         selector: "#search",
         placeHolder: "Search ...",
         data: {
-            src: window.ExtentsCat,
+            src: src,
             keys: ["name"]
         },
         resultItem: {
