@@ -1,5 +1,8 @@
 export function initMap(code) {
 
+    const params = new URLSearchParams(window.location.search);
+	window.posts = (params.get("twitter")) ? window.MunibotTweets.twitter : window.MunibotPosts.mastodon;
+
     let mapConf = {
         "es": {
             "idField": "codine",
@@ -73,10 +76,10 @@ export function initMap(code) {
             'layout': {},
             'paint': {
                 'fill-color': ['case',
-                    ['boolean', ['feature-state', 'tweet'], false], '#ca562c', '#edeac2'
+                    ['boolean', ['feature-state', 'post'], false], '#ca562c', '#edeac2'
                 ],
                 'fill-outline-color': ['case',
-                    ['boolean', ['feature-state', 'tweet'], false], '#4A4A4A', '#636363'
+                    ['boolean', ['feature-state', 'post'], false], '#4A4A4A', '#636363'
                 ],
             }
         }]
@@ -92,9 +95,24 @@ export function initMap(code) {
         let properties = e.features[0].properties;
         let state = e.features[0].state;
         let content = "";
-        if (!state.tweet_status) {
+        let is_twitter = !window.posts.host
+        if (!state.post_id) {
             content += properties[mapConf["nameField"]] + ' (' + properties[mapConf["higherNameField"]] + ')';
-            content += "<div>No tweet yet</div>"
+            content += "<div>No post yet</div>"
+
+
+        } else if (!is_twitter){
+          content += `
+			<iframe
+            src="https://${window.posts.host}/@${window.posts.account}/${state.post_id}/embed"
+            width="600"
+            height="600"
+            scrolling="yes"
+            allowfullscreen="allowfullscreen"
+            sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"
+            ></iframe>
+          `
+
         }
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
@@ -103,8 +121,10 @@ export function initMap(code) {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
         let popup = new maplibregl.Popup().setLngLat(coordinates).setHTML(content).addTo(map);
-        if (state.tweet_status) {
-            twttr.widgets.createTweet(state.tweet_status, popup._content)
+        if (is_twitter) {
+          if (state.post_id) {
+            twttr.widgets.createTweet(state.post_id, popup._content)
+          }
         }
     });
 
@@ -121,14 +141,14 @@ export function initMap(code) {
     });
 
     map.on('sourcedata', function(e) {
-        Object.keys(window.MunibotTweets.tweets).forEach(function(key, index) {
+        Object.keys(window.posts.posts).forEach(function(key, index) {
             map.setFeatureState({
                 'source': code,
                 'sourceLayer': code,
                 'id': key
             }, {
-                'tweet': true,
-                'tweet_status': window.MunibotTweets.tweets[key]
+                'post': true,
+                'post_id': window.posts.posts[key]
             });
         });
     });
@@ -143,9 +163,9 @@ export function initMap(code) {
 }
 
 function initCounts() {
-    let tweeted = window.MunibotTweets.tweeted
-    let total = window.MunibotTweets.total
-    let content = `| ${tweeted} tweets / ${total} total (${parseInt(tweeted/total*100)}%) |`
+    let posted = window.posts.posted
+    let total = window.posts.total
+    let content = `| ${posted} posts / ${total} total (${parseInt(posted/total*100)}%) |`
     document.getElementsByClassName("counts")[0].append(
         document.createElement('li').appendChild(
             document.createTextNode(content)))
@@ -249,7 +269,6 @@ function initSearch(code, map) {
     });
 
 }
-
 
 window.twttr = (function(d, s, id) {
     let js, fjs = d.getElementsByTagName(s)[0],

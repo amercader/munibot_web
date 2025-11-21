@@ -12,10 +12,11 @@
 	<nav class="crumbs">
 		<ol>
             <li class="crumb"><a href="/">Munibot</a> ></li>
-			<li class="crumb active">Communebot France <span class="twitter-link">(<a href="https://twitter.com/communebot" rel="noreferrer">@communebot</a>)</span></li>
+            <li class="crumb active"><a href="?">Communebot France</a> <span class="twitter-link">(<a href="https://mastodon.social/@communebot" rel="noreferrer">@communebot</a>)</span></li>
             <li class="crumb counts"></li>
             <li class="crumb"><input id="search" autocomplete="off"></li>
             <li class="selection crumb"></li>
+            <li class="crumb">[<a href="?twitter=1">old Twitter bot</a>]</li>
 		</ol>
 	</nav>
     <div id="map"></div>
@@ -36,6 +37,7 @@
     <script src="https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.6/dist/autoComplete.min.js"></script>
     <script src="https://tiles.amercader.net/tweets/fr.js"></script>
+    <script src="https://tiles.amercader.net/posts/fr.js"></script>
     <script type="module">
       import { initMap } from "../js/munibot_web.js";
       initMap("fr");

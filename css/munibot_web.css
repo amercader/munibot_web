@@ -78,6 +78,10 @@ nav .active {
   }
 }
 
+.mapboxgl-popup-content iframe {
+  border: 0;
+}
+
 #extent-map {
   position: absolute;
   bottom: 0;
